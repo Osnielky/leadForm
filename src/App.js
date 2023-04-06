@@ -1,25 +1,28 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import React, { useState, useRef, useEffect } from 'react';
-import BoxSx  from './components/box/box';
 import Message from './components/message/messaje'
 import Procedure from './components/procedure';
 import FullName from './components/textgather/fullname';
+import AlertDismissible from './components/alertdismissible';
+import Util from './util/utilFunctions'
 function App() {
 
   const procedures = ['Brazilian Butt Lift ', 'Tummy Tuck', 'Breast Lift ', 'Breast Augmentation', 'Face Lift', 'Lipo 360', 'Mummy Make Over']
-  const howsoon = ['ASAP', 'One to Three Month', 'In six months ', 'In a Year']
-  const [show, setShow] = useState({ secundTextHidden:true, firstTextHidden:false, chooseProcedureHidden: true, howsoonHidden: true, fullNameComp: true, emailHiddenComp:true,  phoneHiddenComp: true });
-  let evaluation = useRef({ procedure: '', howSoon: '', FullName: '', email:'', phone:'' })
+  const howsoon = ['ASAP', 'One to Three Month', 'In six Months ', 'In a Year']
+  const [show, setShow] = useState({ secundTextHidden: true, firstTextHidden: false, chooseProcedureHidden: true, howsoonHidden: true, fullNameComp: true, emailHiddenComp: true, phoneHiddenComp: true });
+  let evaluation = useRef({ procedure: '', howSoon: '', FullName: '', email: '', phone: '' })
 
   useEffect(() => {
     console.log(show);
   }, [show]);
 
+
   const setProcedure = (procedureName) => {
-    
+
+
     if (show.firstTextHidden === false) {
-      
+
       setShow({
         ...show,
         chooseProcedureHidden: false,
@@ -56,19 +59,24 @@ function App() {
       },);
     }
     else if (show.fullNameComp === false) {
-      const varEval = evaluation.current
+      const varEval = evaluation.current;
       evaluation.current = {
         ...varEval,
         FullName: procedureName
       }
-      console.log(evaluation);
-      setShow({
-        ...show,
-      
-        fullNameComp: true,
-        emailHiddenComp:false
 
-      },);
+      if (!Util.testingExport('name', procedureName)) {
+        alert('name and last name incorect')
+      }
+      else {
+        setShow({
+          ...show,
+
+          fullNameComp: true,
+          emailHiddenComp: false
+
+        },);
+      }
     }
 
     else if (show.emailHiddenComp === false) {
@@ -77,13 +85,16 @@ function App() {
         ...varEval,
         email: procedureName
       }
-      console.log(evaluation);
+      if (!Util.testingExport('email', procedureName)) {
+        alert('Email is incorrect ')
+      }
+      else {
       setShow({
         ...show,
         phoneHiddenComp: false,
         emailHiddenComp: true
       },);
-
+    }
     }
 
     else if (show.phoneHiddenComp === false) {
@@ -93,12 +104,16 @@ function App() {
         ...varEval,
         phone: procedureName
       }
-      console.log(evaluation);
+      if (!Util.testingExport('phone', procedureName)) {
+        alert('Phone Number Incorrect ')
+      }
+      else {
       setShow({
         ...show,
         phoneHiddenComp: true,
-        firstTextHidden: false
+        secundTextHidden: false
       },);
+    }
     }
   }
 
@@ -106,28 +121,26 @@ function App() {
   return (
 
     <div className="App">
-
-      <Message show={show.firstTextHidden} key={1} buttonText={'Begin'} name={'This is the text you should show '} startPressed={setProcedure} />
      
-
-     <></>
+      <Message show={show.firstTextHidden} key={1} buttonText={'Begin'} name={'Starting Message '} startPressed={setProcedure} />
+      <></>
       {procedures.map(
         (item, i) => (
-          <Procedure show={show.chooseProcedureHidden} key={ item+i} name={item} setProcedure={setProcedure}> </Procedure>
+          <Procedure show={show.chooseProcedureHidden} key={item + i} name={item} setProcedure={setProcedure}> </Procedure>
         )
       )}
       {howsoon.map(
         (item, i) => (
-          <Procedure show={show.howsoonHidden} key={ item + i} name={item} setProcedure={setProcedure}> </Procedure>
+          <Procedure show={show.howsoonHidden} key={item + i} name={item} setProcedure={setProcedure}> </Procedure>
         )
       )}
-      <FullName type='text' labelName='Full Name' hidden={show.fullNameComp} key={ 2} setProcedure={setProcedure}></FullName>
-      <FullName type='email' labelName='Email' hidden={show.emailHiddenComp} key={ 3} setProcedure={setProcedure}></FullName>
-      <FullName type='number' labelName='Phone Number' hidden={show.phoneHiddenComp} key={ 4} setProcedure={setProcedure}></FullName>
-      <Message show={show.secundTextHidden} key={5} name={'All done'} buttonText= {'Finish'} startPressed={setProcedure} />
-    
+      <FullName type='text' labelName='Full Name' hidden={show.fullNameComp} key={2} setProcedure={setProcedure}></FullName>
+      <FullName type="email" labelName='Email' hidden={show.emailHiddenComp} key={3} setProcedure={setProcedure}></FullName>
+      <FullName type='number' labelName='Phone Number' hidden={show.phoneHiddenComp} key={4} setProcedure={setProcedure}></FullName>
+      <Message show={show.secundTextHidden} key={5} name={'All done'} buttonText={'Finish'} startPressed={setProcedure} />
+
     </div>
-    
+
   );
 }
 export default App;

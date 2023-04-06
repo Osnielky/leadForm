@@ -7,7 +7,7 @@ function AlertDismissible() {
 
   return (
     <>
-      <Alert show={show} variant="success">
+      <Alert show={show} variant="error">
         <Alert.Heading>How's it going?!</Alert.Heading>
         <p>
           Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget

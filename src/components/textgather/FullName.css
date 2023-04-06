@@ -1,9 +1,13 @@
-.FullName {
-  margin-top: 6px;
+.Text {
+
+  margin-top: 12px;
+  width: 50%;
+  margin-left: 15%;
+  color: aliceblue;
 }
 
 .button{
 
-margin-top: 6px;
+margin-top: 10%;
 
 }
